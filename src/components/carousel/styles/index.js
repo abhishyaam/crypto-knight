@@ -51,7 +51,7 @@ export const Row = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 1em 0;
+  margin: 0.8em 0;
   font-size: 0.8em;
   width: 100%;
   font-weight: 800;

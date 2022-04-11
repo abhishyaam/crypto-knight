@@ -3,7 +3,7 @@ import { Banner, Carousel } from '../components';
 import styled from 'styled-components/macro';
 import { TrendingCoins } from '../apis/coin-gecko';
 import { CryptoState } from '../context/CryptoContext';
-
+import { formatNumber } from '../utils';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,7 +16,7 @@ const Container = styled.div`
 
 export default function HomePage() {
   const [trendCoins, setTrendCoins] = useState([]);
-  const { currency, symbol } = CryptoState;
+  const { currency, symbol } = CryptoState();
 
   useEffect(() => {
     try {
@@ -44,26 +44,30 @@ export default function HomePage() {
           <Carousel.Title>Trending Coins</Carousel.Title>
           <Carousel.List>
             {trendCoins.length > 0
-              ? trendCoins.map(
-                  ({
-                    symbol,
-                    id,
-                    image,
-                    ath_change_percentage,
-                    current_price,
-                  }) => (
-                    <Carousel.Item key={symbol}>
-                      <Carousel.Item.Icon src={image}></Carousel.Item.Icon>
-                      <Carousel.Item.Row>
-                        <span>{symbol.toUpperCase()}</span>{' '}
-                        <span>{ath_change_percentage}%</span>
-                      </Carousel.Item.Row>
-                      {/* <Carousel.Item.Row>
-                        <bold>{`${symbol}${current_price}`}</bold>
-                      </Carousel.Item.Row> */}
-                    </Carousel.Item>
-                  )
-                )
+              ? trendCoins.map((coin) => (
+                  <Carousel.Item key={coin.symbol}>
+                    <Carousel.Item.Icon src={coin.image}></Carousel.Item.Icon>
+                    <Carousel.Item.Row>
+                      <span>{coin.symbol.toUpperCase()}</span>{' '}
+                      <span
+                        style={{
+                          color:
+                            coin.price_change_percentage_24h > 0
+                              ? 'green'
+                              : 'red',
+                        }}
+                      >
+                        {(Math.round(coin.price_change_percentage_24h) * 100) /
+                          100}
+                        %
+                      </span>
+                    </Carousel.Item.Row>
+                    <Carousel.Item.Row>
+                      <p>Price :</p>
+                      <p>{`${symbol}${formatNumber(coin.current_price)}`}</p>
+                    </Carousel.Item.Row>
+                  </Carousel.Item>
+                ))
               : null}
           </Carousel.List>
         </Carousel>
