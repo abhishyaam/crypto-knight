@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#root {
+  background-image: url('assets/bg.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: #ffffffaf;
+  padding: 0.5em;
+}
